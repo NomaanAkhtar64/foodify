@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String
+  isAdmin  Boolean
+}
+
+model ShopUser {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String
+}
+
+model Media {
+  id       String @id @default(uuid())
+  filename String
+  path     String
+  size     Int
+  alt      String
+}
+
+model Food {
+  id        String      @id @default(uuid())
+  name      String
+  price     Float
+  cost      Float
+  OrderItem OrderItem[]
+  AddOn     AddOn[]
+}
+
+model AddOn {
+  id     String @id @default(uuid())
+  name   String
+  price  Float
+  cost   Float
+  item   Food   @relation(fields: [foodId], references: [id])
+  foodId String
+}
+
+model OrderItem {
+  id      String  @id @default(uuid())
+  quanity Int
+  item    Food    @relation(fields: [foodId], references: [id])
+  foodId  String
+  Order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
+}
+
+model Order {
+  id    String      @id @default(uuid())
+  items OrderItem[]
+}
