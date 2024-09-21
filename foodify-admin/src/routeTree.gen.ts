@@ -10,83 +10,137 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as AboutImport } from "./routes/about";
-import { Route as IndexImport } from "./routes/index";
+import { Route as rootRoute } from './routes/__root'
+import { Route as SiteImport } from './routes/site'
+import { Route as SalesImport } from './routes/sales'
+import { Route as ProductsImport } from './routes/products'
+import { Route as OrdersImport } from './routes/orders'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  path: "/about",
+const SiteRoute = SiteImport.update({
+  path: '/site',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
+
+const SalesRoute = SalesImport.update({
+  path: '/sales',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsRoute = ProductsImport.update({
+  path: '/products',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrdersRoute = OrdersImport.update({
+  path: '/orders',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
-  path: "/",
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersImport
+      parentRoute: typeof rootRoute
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsImport
+      parentRoute: typeof rootRoute
+    }
+    '/sales': {
+      id: '/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof SalesImport
+      parentRoute: typeof rootRoute
+    }
+    '/site': {
+      id: '/site'
+      path: '/site'
+      fullPath: '/site'
+      preLoaderRoute: typeof SiteImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  '/': typeof IndexRoute
+  '/orders': typeof OrdersRoute
+  '/products': typeof ProductsRoute
+  '/sales': typeof SalesRoute
+  '/site': typeof SiteRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  '/': typeof IndexRoute
+  '/orders': typeof OrdersRoute
+  '/products': typeof ProductsRoute
+  '/sales': typeof SalesRoute
+  '/site': typeof SiteRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/orders': typeof OrdersRoute
+  '/products': typeof ProductsRoute
+  '/sales': typeof SalesRoute
+  '/site': typeof SiteRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about";
-  id: "__root__" | "/" | "/about";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/orders' | '/products' | '/sales' | '/site'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/orders' | '/products' | '/sales' | '/site'
+  id: '__root__' | '/' | '/orders' | '/products' | '/sales' | '/site'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
+  IndexRoute: typeof IndexRoute
+  OrdersRoute: typeof OrdersRoute
+  ProductsRoute: typeof ProductsRoute
+  SalesRoute: typeof SalesRoute
+  SiteRoute: typeof SiteRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-};
+  OrdersRoute: OrdersRoute,
+  ProductsRoute: ProductsRoute,
+  SalesRoute: SalesRoute,
+  SiteRoute: SiteRoute,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -97,14 +151,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/orders",
+        "/products",
+        "/sales",
+        "/site"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/orders": {
+      "filePath": "orders.tsx"
+    },
+    "/products": {
+      "filePath": "products.tsx"
+    },
+    "/sales": {
+      "filePath": "sales.tsx"
+    },
+    "/site": {
+      "filePath": "site.tsx"
     }
   }
 }

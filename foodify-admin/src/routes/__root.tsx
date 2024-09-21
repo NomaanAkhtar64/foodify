@@ -1,7 +1,15 @@
 // import * as React from "react";
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  createRootRoute,
+  useLocation,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
+import sidebarNavigation from "../navigation";
+import CancelIcon from "../icons/cancel";
+import UserIcon from "../icons/user";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -9,15 +17,61 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const [isNavbarOpen, setNavbar] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const fnTimer = setTimeout(function () {
+      if (window.innerWidth < 1024) setNavbar(false);
+    }, 300);
+
+    return () => clearTimeout(fnTimer);
+  }, [pathname]);
+
+  useLayoutEffect(() => {
+    if (window.innerWidth >= 1024) setNavbar(true);
+  }, []);
+
   return (
     <div className="h-full flex flex-row relative min-h-[100dvh]">
       <aside
         className={
-          "absolute top-0 bottom-0 w-[400px] transition-all bg-primary h-full z-10 duration-300 max-w-full " +
-          (isNavbarOpen ? "left-0" : "left-[-400px]")
+          "absolute top-0 bottom-0 w-[350px] transition-all bg-primary-light h-full z-10 duration-300 max-w-full " +
+          (isNavbarOpen ? "left-0" : "left-[-350px]")
         }
       >
-        Sidebar
+        <div className="relative">
+          <h1 className="text-xl text-white w-full text-center left-0 right-0 font-bold tracking-[8px] font-mono bg-primary py-8">
+            CONTROL PANEL
+          </h1>
+          <button
+            className="absolute top-0 right-0 block lg:hidden"
+            onClick={() => setNavbar(false)}
+          >
+            <CancelIcon className="h-8 w-8 text-white" />
+          </button>
+          <nav className="pt-4 flex flex-col ">
+            {sidebarNavigation.map((nav, i) => (
+              <Link
+                key={i}
+                to={nav.to}
+                className="flex flex-row items-center rounded-sm pl-8 pr-2 py-3 transition-all duration-150 tracking-widest "
+                activeProps={{
+                  className:
+                    "text-primary bg-white first:text-primary focus:outline-primary-light",
+                }}
+                inactiveProps={{
+                  className:
+                    "text-white bg-primary-light focus:text-primary focus:bg-orange-300 focus:outline-none",
+                }}
+              >
+                <nav.Icon className="h-8 w-8  bg-none p-1.5 "></nav.Icon>
+                <span className="font-semibold  tracking-[5px] pl-12 pr-8 mr-0">
+                  {nav.text}
+                </span>
+              </Link>
+            ))}
+          </nav>
+        </div>
       </aside>
       <div
         className={
@@ -29,10 +83,10 @@ function RootComponent() {
       <div
         className={
           "flex flex-col w-full transition-all duration-300 " +
-          (isNavbarOpen ? "lg:ml-[400px]" : "lg:ml-0")
+          (isNavbarOpen ? "lg:ml-[350px]" : "lg:ml-0")
         }
       >
-        <header className="flex justify-between items-center shadow-md py-2">
+        <header className="flex justify-between items-center shadow-md py-2 px-4 lg:px-10 ">
           <button
             className="flex items-center text-primary p-3"
             onClick={() => setNavbar(!isNavbarOpen)}
@@ -51,20 +105,7 @@ function RootComponent() {
           </h1>
           <div className="">
             <Link to="/">
-              <svg
-                className="h-7 w-7 text-primary mx-2"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                <path
-                  fillRule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                />
-              </svg>
+              <UserIcon className="h-7 w-7 text-primary mx-2" />
             </Link>
           </div>
         </header>

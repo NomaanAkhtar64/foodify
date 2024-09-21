@@ -1,14 +1,14 @@
 import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
-  component: HomeComponent,
+export const Route = createFileRoute("/site")({
+  component: SiteComponent,
 });
 
-function HomeComponent() {
+function SiteComponent() {
   return (
     <div className="p-2">
-      <h3>DASHBOARD</h3>
+      <h3>About</h3>
     </div>
   );
 }
